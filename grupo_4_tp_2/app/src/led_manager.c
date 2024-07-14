@@ -23,8 +23,6 @@
 
 /********************** macros and definitions *******************************/
 
-#define MAX_LEDS_                (3)
-
 /********************** internal data declaration ****************************/
 
 /********************** internal functions declaration ***********************/
@@ -41,7 +39,12 @@
 bool led_manager_turn_on_led(ao_led_handle_t * hao_led) {
 
     if (!hao_led->task_created) {
-        ao_led_create(hao_led);
+        if (ao_led_create(hao_led)) {
+            LOGGER_INFO("LED Manager - task create");
+        } else {
+        	LOGGER_INFO("LED Manager - ERROR: task not created");
+        	return false;
+        }
     }
 
     if(ao_led_send(hao_led, AO_LED_MESSAGE_ON)) {

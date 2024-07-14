@@ -25,9 +25,16 @@
 
 /********************** macros and definitions *******************************/
 
-#define QUEUE_LENGTH_            (1)
-#define QUEUE_ITEM_SIZE_         (sizeof(ao_ui_message_t))
-#define TIME_LED_ON_MS  1000
+#define QUEUE_LENGTH_			(1)
+#define QUEUE_ITEM_SIZE_		(sizeof(ao_ui_message_t))
+
+#define TIME_LED_ON_MS			1000
+/* The length of the queues is defined based on the maximum number of times
+ * the button can be pressed and generate an event while the LED is on. */
+#define LED_RED_QUEUE_LENGTH	4
+#define LED_GREEN_QUEUE_LENGTH	1
+#define LED_BLUE_QUEUE_LENGTH	1
+
 
 /********************** internal data declaration ****************************/
 
@@ -37,9 +44,9 @@
 
 /********************** external data definition *****************************/
 
-ao_led_handle_t hao_ledR = {NULL, false, TIME_LED_ON_MS, LED_RED_PORT, LED_RED_PIN};
-ao_led_handle_t hao_ledG = {NULL, false, TIME_LED_ON_MS, LED_GREEN_PORT, LED_GREEN_PIN};
-ao_led_handle_t hao_ledB = {NULL, false, TIME_LED_ON_MS, LED_BLUE_PORT, LED_BLUE_PIN};
+ao_led_handle_t hao_ledR = {NULL, LED_RED_QUEUE_LENGTH, false, TIME_LED_ON_MS, LED_RED_PORT, LED_RED_PIN};
+ao_led_handle_t hao_ledG = {NULL, LED_GREEN_QUEUE_LENGTH, false, TIME_LED_ON_MS, LED_GREEN_PORT, LED_GREEN_PIN};
+ao_led_handle_t hao_ledB = {NULL, LED_BLUE_QUEUE_LENGTH, false, TIME_LED_ON_MS, LED_BLUE_PORT, LED_BLUE_PIN};
 
 /********************** internal functions definition ************************/
 
@@ -82,17 +89,19 @@ bool ao_ui_send(ao_ui_handle_t* hao, ao_ui_message_t msg) {
     return (pdPASS == xQueueSend(hao->hqueue, (void*)&msg, 0));
 }
 
-void ao_ui_init(ao_ui_handle_t* hao) {
+bool ao_ui_init(ao_ui_handle_t* hao) {
     hao->hqueue = xQueueCreate(QUEUE_LENGTH_, QUEUE_ITEM_SIZE_);
-    while(NULL == hao->hqueue) {
-        // error
+    if (NULL == hao->hqueue) {
+        return false;
     }
 
     BaseType_t status;
     status = xTaskCreate(task_, "task_ao_ui", 128, (void* const)hao, tskIDLE_PRIORITY, NULL);
-    while (pdPASS != status) {
-        // error
+    if (pdPASS != status) {
+        return false;
     }
+
+    return true;
 }
 
 /********************** end of file ******************************************/

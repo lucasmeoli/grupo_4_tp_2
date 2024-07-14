@@ -47,7 +47,7 @@ static void turn_on_led(ao_led_handle_t* hao_led) {
 }
 
 static void task_destroy(ao_led_handle_t* hao_led) {
-    LOGGER_INFO("AO LED - Elimino tarea");
+    LOGGER_INFO("AO LED - Task destroy");
     hao_led->task_created = false;
     vTaskDelete(NULL);
 }
@@ -76,19 +76,20 @@ bool ao_led_send(ao_led_handle_t* hao_led, ao_led_message_t msg) {
     return (pdPASS == xQueueSend(hao_led->hqueue, (void*)&msg, 0));
 }
 
-void ao_led_create(ao_led_handle_t* hao_led) {
+bool ao_led_create(ao_led_handle_t* hao_led) {
     hao_led->hqueue = xQueueCreate(QUEUE_LENGTH_, QUEUE_ITEM_SIZE_);
-    while(NULL == hao_led->hqueue) {
-      // error
+    if(NULL == hao_led->hqueue) {
+      return false;
     }
 
     BaseType_t status;
-    LOGGER_INFO("AO LED - task create");
     status = xTaskCreate(task_, "task_ao_led", 128, (void* const)hao_led, tskIDLE_PRIORITY, NULL);
-    while (pdPASS != status) {
-        // error
+    if (pdPASS != status) {
+    	return false;
     }
     hao_led->task_created = true;
+
+    return true;
 }
 
 /********************** end of file ******************************************/

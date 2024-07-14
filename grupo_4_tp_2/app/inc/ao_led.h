@@ -34,6 +34,7 @@ typedef enum {
 
 typedef struct {
     QueueHandle_t hqueue;
+    uint16_t queue_length;
     bool task_created;
     uint16_t time_on;
     GPIO_TypeDef* port;
@@ -46,9 +47,7 @@ typedef struct {
 
 bool ao_led_send(ao_led_handle_t* hao_led, ao_led_message_t msg);
 
-void ao_led_create(ao_led_handle_t* hao_led);
-
-void ao_led_destroy();
+bool ao_led_create(ao_led_handle_t* hao_led);
 
 /********************** End of CPP guard *************************************/
 #ifdef __cplusplus

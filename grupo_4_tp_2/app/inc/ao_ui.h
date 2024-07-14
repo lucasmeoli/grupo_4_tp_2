@@ -45,7 +45,7 @@ typedef struct {
 
 bool ao_ui_send(ao_ui_handle_t* hao, ao_ui_message_t msg);
 
-void ao_ui_init(ao_ui_handle_t* hao);
+bool ao_ui_init(ao_ui_handle_t* hao);
 
 /********************** End of CPP guard *************************************/
 #ifdef __cplusplus
