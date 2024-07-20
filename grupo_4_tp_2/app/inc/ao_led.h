@@ -46,7 +46,6 @@ typedef struct {
 /********************** external functions declaration ***********************/
 
 bool ao_led_send(ao_led_handle_t* hao_led, ao_led_message_t msg);
-
 bool ao_led_create(ao_led_handle_t* hao_led);
 
 /********************** End of CPP guard *************************************/

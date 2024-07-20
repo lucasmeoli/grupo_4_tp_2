@@ -49,6 +49,7 @@ extern "C" {
 /********************** external data declaration ****************************/
 
 /********************** external functions declaration ***********************/
+
 void app_init(void);
 
 /********************** End of CPP guard *************************************/

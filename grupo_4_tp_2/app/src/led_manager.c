@@ -35,27 +35,25 @@
 
 /********************** external functions definition ************************/
 
-
 bool led_manager_turn_on_led(ao_led_handle_t * hao_led) {
 
     if (!hao_led->task_created) {
         if (ao_led_create(hao_led)) {
-            LOGGER_INFO("LED Manager - task create");
+            LOGGER_INFO("LED Manager - Task create");
         } else {
-        	LOGGER_INFO("LED Manager - ERROR: task not created");
-        	return false;
+            LOGGER_ERROR("LED Manager - Task not created");
+            return false;
         }
     }
 
     if(ao_led_send(hao_led, AO_LED_MESSAGE_ON)) {
-        LOGGER_INFO("Led Manager: QueueSend");
+        LOGGER_INFO("Led Manager - QueueSend");
         return true;
     }
 
-    LOGGER_INFO("Led Manager: Error - No hay más lugar en la cola");
+    LOGGER_ERROR("Led Manager - No more space in queue");
 
     return false;
 }
-
 
 /********************** end of file ******************************************/

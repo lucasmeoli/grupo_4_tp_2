@@ -40,10 +40,10 @@
 
 static void turn_on_led(ao_led_handle_t* hao_led) {
     HAL_GPIO_WritePin(hao_led->port, hao_led->pin, GPIO_PIN_SET);
-    LOGGER_INFO("AO LED - led on");
+    LOGGER_INFO("AO LED - Led on");
     vTaskDelay(hao_led->time_on);
     HAL_GPIO_WritePin(hao_led->port, hao_led->pin, GPIO_PIN_RESET);
-    LOGGER_INFO("AO LED - led off");
+    LOGGER_INFO("AO LED - Led off");
 }
 
 static void task_destroy(ao_led_handle_t* hao_led) {
@@ -62,7 +62,7 @@ static void task_(void *argument) {
                 turn_on_led(hao_led);
                 break;
             default:
-                LOGGER_INFO("AO LED - error");
+                LOGGER_ERROR("AO LED - Unknown message");
                 break;
         }
     }

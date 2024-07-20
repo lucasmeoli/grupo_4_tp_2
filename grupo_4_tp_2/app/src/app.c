@@ -56,8 +56,8 @@
 
 ao_ui_handle_t hao_ui;
 
-
 /********************** external functions definition ************************/
+
 void app_init(void) {
 
     ao_ui_init(&hao_ui);

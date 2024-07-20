@@ -5,8 +5,6 @@
  *      Author: lpmeoli
  */
 
-
-
 /********************** inclusions *******************************************/
 
 #include <stdio.h>
@@ -35,7 +33,6 @@
 #define LED_GREEN_QUEUE_LENGTH	1
 #define LED_BLUE_QUEUE_LENGTH	1
 
-
 /********************** internal data declaration ****************************/
 
 /********************** internal functions declaration ***********************/
@@ -61,22 +58,22 @@ static void task_(void *argument) {
                   break;
 
               case AO_UI_MESSAGE_BUTTON_PULSE:
-                  LOGGER_INFO("AO UI - button pulse");
+                  LOGGER_INFO("AO UI - Button pulse");
                   led_manager_turn_on_led(&hao_ledR);
                   break;
 
               case AO_UI_MESSAGE_BUTTON_SHORT:
-                  LOGGER_INFO("AO UI - button short");
+                  LOGGER_INFO("AO UI - Button short");
                   led_manager_turn_on_led(&hao_ledG);
                   break;
 
               case AO_UI_MESSAGE_BUTTON_LONG:
-                  LOGGER_INFO("AO UI - button long");
+                  LOGGER_INFO("AO UI - Button long");
                   led_manager_turn_on_led(&hao_ledB);
                   break;
 
               default:
-                  LOGGER_INFO("AO UI - button error");
+                  LOGGER_ERROR("AO UI - Unknown message");
                   break;
             }
         }
